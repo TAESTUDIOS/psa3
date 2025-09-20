@@ -87,7 +87,7 @@ export default function RitualForm({ editId, onDone }: Props) {
             </label>
             <label className="flex items-center gap-2 text-sm">
               <span>Repeat</span>
-              <select className="border rounded px-2 py-1 bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700" value={repeat} onChange={(e) => setRepeat(e.target.value)}>
+              <select className="border rounded px-2 py-1 bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700" value={repeat} onChange={(e) => setRepeat(e.target.value as "daily" | "weekly" | "monthly" | "none")}>
                 <option value="daily">daily</option>
                 <option value="weekly">weekly</option>
                 <option value="monthly">monthly</option>
@@ -113,3 +113,4 @@ export default function RitualForm({ editId, onDone }: Props) {
     </div>
   );
 }
+
