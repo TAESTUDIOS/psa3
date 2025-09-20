@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "id": "appt_uxt1eni",
+      "title": "test",
+      "date": "2025-09-16",
+      "start": "09:00",
+      "durationMin": 30
+    },
+    {
+      "id": "appt_2x7qa9v",
+      "title": "dfhdfhdf",
+      "date": "2025-09-25",
+      "start": "09:00",
+      "durationMin": 30
+    },
+    {
+      "id": "appt_h3jcgr6",
+      "title": "sfdh",
+      "date": "2025-09-25",
+      "start": "09:00",
+      "durationMin": 30
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+/* styles/globals.css */
+/* Global styles and Tailwind layers for the PSA */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #ffffff;
+  --fg: #111827;
+  --header-h: 56px; /* mobile header height */
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+a {
+  text-underline-offset: 2px;
+}
+
+/* Small polish: focus ring and fade-in animation */
+:focus-visible {
+  outline: 2px solid #6366f1; /* indigo-500 */
+  outline-offset: 2px;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fade-in 180ms ease-out;
+}
+
+/* Hide scrollbars on mobile nav scrollers */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Smooth touch scrolling */
+.touch-scroll { -webkit-overflow-scrolling: touch; }
+
+/* Respect iOS home indicator safe area */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+/* Global dark defaults for form controls (fallback for unstyled elements) */
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #0b1220; /* ~gray-950 */
+  color: #f3f4f6; /* gray-100 */
+  border-color: #374151; /* gray-700 */
+}
+.dark button {
+  border-color: #374151; /* keep neutral buttons visible on dark */
+}
