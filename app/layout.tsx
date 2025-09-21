@@ -6,6 +6,9 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 import Sidebar from "@/components/Sidebar";
 import ThemeClient from "@/components/ThemeClient";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "Personal Stability Assistant",
@@ -22,16 +25,16 @@ export const viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
-      <body className="h-full overflow-hidden antialiased bg-black text-green-400 font-mono">
+      <body className={`${inter.className} h-full overflow-hidden antialiased bg-[var(--surface-0)] text-[var(--fg)]`}>
         <ThemeClient />
         <div className="h-screen flex flex-col md:flex-row">
           {/* Sidebar (collapsible at small widths, expanded on md+) */}
-          <aside className="hidden md:block w-64 border-r border-green-800">
+          <aside className="hidden md:block w-64 border-r border-[var(--border)] bg-[var(--surface-1)]">
             <Sidebar />
           </aside>
 
           {/* Top nav on mobile */}
-          <header className="md:hidden w-full border-b border-green-800 sticky top-0 z-20 bg-black">
+          <header className="md:hidden w-full border-b border-[var(--border)] sticky top-0 z-20 bg-[var(--surface-0)]/90 backdrop-blur">
             <div className="px-4 py-3">
               <Sidebar variant="top" />
             </div>
@@ -48,4 +51,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
 

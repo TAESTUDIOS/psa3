@@ -37,7 +37,9 @@ export default function SavedPage() {
             <li key={s.id} className="p-3 border rounded-md bg-white dark:bg-gray-900 dark:border-gray-800">
               <div className="text-sm whitespace-pre-wrap text-gray-900 dark:text-gray-100">{s.text}</div>
               <div className="mt-2 flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
-                <span suppressHydrationWarning>{new Date(s.createdAt).toLocaleString()}</span>
+                <span suppressHydrationWarning>
+                  {new Date(s.createdAt).toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}
+                </span>
                 <button
                   onClick={async () => {
                     try { await fetch(api(`/save?id=${encodeURIComponent(s.id)}`), { method: "DELETE" }); } catch {}

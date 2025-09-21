@@ -47,7 +47,7 @@ export default function Sidebar({ variant = "side" }: Props) {
           {/* Hamburger button */}
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-md px-3 py-2 border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800"
+            className="inline-flex items-center gap-2 rounded-md px-3 py-2 border border-[var(--border)] bg-[var(--surface-1)] text-[var(--fg)] shadow-subtle hover:bg-[var(--surface-2)] focus:outline-none focus:ring-2 focus:ring-slate-400"
             aria-haspopup="menu"
             aria-expanded={open}
             aria-controls="topnav-menu"
@@ -71,7 +71,7 @@ export default function Sidebar({ variant = "side" }: Props) {
               id="topnav-menu"
               role="menu"
               aria-label="Navigation menu"
-              className="absolute left-0 top-12 z-30 w-64 rounded-md border border-gray-200 bg-white p-2 shadow-lg dark:border-gray-800 dark:bg-gray-900"
+              className="absolute left-0 top-12 z-30 w-64 rounded-lg border border-[var(--border)] bg-[var(--surface-1)] p-2 shadow-elevated"
             >
               <div className="flex flex-col" role="none">
                 {links.map((l) => {
@@ -81,10 +81,8 @@ export default function Sidebar({ variant = "side" }: Props) {
                       key={l.href}
                       href={l.href}
                       className={clsx(
-                        "w-full px-3 py-2 rounded-md text-left",
-                        active
-                          ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
-                          : "text-gray-800 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
+                        "w-full px-3 py-2 rounded-md text-left transition-colors",
+                        active ? "bg-gray-700 text-white" : "text-[var(--fg)]/85 hover:bg-[var(--surface-2)]"
                       )}
                       aria-current={active ? "page" : undefined}
                       role="menuitem"
@@ -96,15 +94,15 @@ export default function Sidebar({ variant = "side" }: Props) {
                 })}
 
                 {/* Triggers submenu */}
-                <div className="mt-1 border-t border-gray-200 pt-1 dark:border-gray-800" role="none">
+                <div className="mt-1 border-t border-[var(--border)] pt-1" role="none">
                   <button
                     type="button"
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-md text-left text-gray-800 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-md text-left text-[var(--fg)]/85 hover:bg-[var(--surface-2)]"
                     aria-haspopup="true"
                     aria-expanded={openTriggers}
                     onClick={() => setOpenTriggers((v) => !v)}
                   >
-                    <span>Triggers</span>
+                    <span className={clsx(openTriggers ? "text-gray-400" : "")}>Triggers</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
@@ -118,7 +116,7 @@ export default function Sidebar({ variant = "side" }: Props) {
                   {openTriggers && (
                     <ul className="mt-1 max-h-56 overflow-auto pr-1" role="menu" aria-label="Chat triggers">
                       {chatTriggers.length === 0 ? (
-                        <li className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400" role="none">
+                        <li className="px-3 py-2 text-sm text-[var(--fg)]/50" role="none">
                           No chat triggers configured
                         </li>
                       ) : (
@@ -126,7 +124,7 @@ export default function Sidebar({ variant = "side" }: Props) {
                           <li key={r.id} role="none">
                             <Link
                               href={`/chat?trigger=${encodeURIComponent(r.id)}`}
-                              className="block w-full truncate px-3 py-2 text-left text-gray-800 hover:bg-gray-100 rounded-md dark:text-gray-200 dark:hover:bg-gray-800"
+                              className="block w-full truncate px-3 py-2 text-left text-[var(--fg)]/85 hover:bg-[var(--surface-2)] rounded-md"
                               role="menuitem"
                               onClick={() => setOpen(false)}
                               title={r.name}
@@ -154,9 +152,7 @@ export default function Sidebar({ variant = "side" }: Props) {
                 href={l.href}
                 className={clsx(
                   "px-3 py-2 rounded-md transition-colors min-w-[72px] text-left",
-                  active
-                    ? "bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900"
-                    : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                  active ? "bg-gray-700 text-white" : "text-[var(--fg)]/80 hover:bg-[var(--surface-2)]"
                 )}
                 aria-current={active ? "page" : undefined}
               >

@@ -5,17 +5,21 @@
 
 import Link from "next/link";
 
+const TZ = "Europe/Amsterdam";
+
 function formatDateLabel(d: Date) {
-  const opts: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric" };
-  return d.toLocaleDateString(undefined, opts);
+  const opts: Intl.DateTimeFormatOptions = { weekday: "short", month: "short", day: "numeric", timeZone: TZ };
+  return d.toLocaleDateString("nl-NL", opts);
 }
 
 function toISODate(d: Date) {
-  // YYYY-MM-DD in local time
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  // YYYY-MM-DD in Europe/Amsterdam timezone
+  const fmt = new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: TZ });
+  const parts = fmt.formatToParts(d);
+  const y = parts.find((p) => p.type === "year")?.value || String(d.getUTCFullYear());
+  const m = parts.find((p) => p.type === "month")?.value || String(d.getUTCMonth() + 1).padStart(2, "0");
+  const day = parts.find((p) => p.type === "day")?.value || String(d.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 export default function ScheduleOverviewPage() {

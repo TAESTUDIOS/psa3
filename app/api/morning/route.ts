@@ -37,7 +37,7 @@ function todayInTzISO(tz: string) {
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const tz = searchParams.get("tz") || "UTC";
+    const tz = searchParams.get("tz") || "Europe/Amsterdam";
     const date = searchParams.get("date") || todayInTzISO(tz);
 
     // Fetch data
@@ -66,7 +66,7 @@ export async function GET(req: Request) {
           return da - db;
         })
         .slice(0, 5)
-        .map((t) => `• ${t.title}${t.dueAt ? ` (due ${new Date(t.dueAt).toLocaleDateString()})` : ""}`);
+        .map((t) => `• ${t.title}${t.dueAt ? ` (due ${new Date(t.dueAt).toLocaleDateString("nl-NL", { timeZone: tz })})` : ""}`);
       sections.push("Top focus:");
       sections.push(...top);
     }
@@ -144,7 +144,7 @@ export async function POST(req: Request) {
     }
 
     // Initial trigger → same as GET for today in provided or default timezone
-    const tz = (body?.tz as string | undefined) || "UTC";
+    const tz = (body?.tz as string | undefined) || "Europe/Amsterdam";
     const date = (body?.date as string | undefined) || todayInTzISO(tz);
 
     const [urgent, appts] = await Promise.all<[

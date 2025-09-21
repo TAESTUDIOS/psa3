@@ -23,7 +23,7 @@ a {
 
 /* Small polish: focus ring and fade-in animation */
 :focus-visible {
-  outline: 2px solid #6366f1; /* indigo-500 */
+  outline: 2px solid #94a3b8; /* slate-400 */
   outline-offset: 2px;
 }
 
@@ -57,3 +57,34 @@ a {
 .dark button {
   border-color: #374151; /* keep neutral buttons visible on dark */
 }
+
+/* Graphite theme tokens (light/dark) */
+:root {
+  --surface-0: #0b0f19; /* primary background (graphite) */
+  --surface-1: #0f1526; /* elevated surface */
+  --surface-2: #131b31; /* higher elevation */
+  --border: rgba(255,255,255,0.06);
+  --fg: #e5e7eb; /* gray-200 */
+  --muted: #a3aab8; /* muted text */
+  --accent: #9ca3af; /* gray-400 as neutral accent */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--surface-0);
+  }
+}
+
+.dark {
+  --bg: var(--surface-0);
+}
+
+::selection {
+  background: rgba(148, 163, 184, 0.28); /* slate-400/30 */
+  color: #e5e7eb;
+}
+
+/* Subtle scrollbars on desktop */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-track { background: transparent; }

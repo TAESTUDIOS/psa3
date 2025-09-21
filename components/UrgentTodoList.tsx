@@ -81,8 +81,11 @@ export default function UrgentTodoList() {
                 <option value="low">Low</option>
               </select>
               {t.dueAt && (
-                <span className="whitespace-nowrap text-xs text-gray-500 dark:text-gray-400" title={new Date(t.dueAt).toLocaleString()}>
-                  due {new Date(t.dueAt).toLocaleDateString()}
+                <span
+                  className="whitespace-nowrap text-xs text-gray-500 dark:text-gray-400"
+                  title={new Date(t.dueAt).toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}
+                >
+                  due {new Date(t.dueAt).toLocaleDateString("nl-NL", { timeZone: "Europe/Amsterdam" })}
                 </span>
               )}
               <button

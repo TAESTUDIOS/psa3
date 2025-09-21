@@ -49,13 +49,13 @@ export default function RitualButtons({ ritualId, buttons }: Props) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2 font-mono text-green-400">
+    <div className="flex flex-wrap gap-2">
       {buttons.map((b) => (
         <button
           key={b}
           onClick={() => onClick(b)}
           disabled={loading === b}
-          className="px-2 py-0.5 text-xs rounded border border-green-700 bg-black text-green-400 hover:bg-green-900/20 aria-[busy=true]:opacity-60"
+          className="px-2.5 py-1 text-xs rounded-md border border-[var(--border)] bg-[var(--surface-1)] text-[var(--fg)] hover:bg-[var(--surface-2)] aria-[busy=true]:opacity-60 disabled:opacity-60 shadow-subtle"
           aria-label={`Ritual action ${b}`}
           aria-busy={loading === b}
         >

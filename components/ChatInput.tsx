@@ -27,6 +27,22 @@ export default function ChatInput() {
       });
     } catch {}
 
+    // Quick inline commands handled locally
+    const norm = content.trim().toLowerCase();
+    if (norm === "/urgent" || norm.startsWith("/urgent ")) {
+      const ts = Date.now();
+      const textRes = "Here are your urgent items:\n<grid-urgent>";
+      addMessage({ id: uid("m"), role: "assistant", text: textRes, timestamp: ts });
+      try {
+        await fetch("/api/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role: "assistant", text: textRes, timestamp: ts, echo: false }),
+        });
+      } catch {}
+      return;
+    }
+
     // Detect ritual trigger: match by exact chat keyword OR '/start <ritualId>'
     const keywordMatch = rituals.find(
       (r) => r.trigger?.type === "chat" && typeof r.trigger.chatKeyword === "string" && content === r.trigger.chatKeyword
@@ -75,34 +91,42 @@ export default function ChatInput() {
     }
 
     // Fallback behavior (Step 11): call fallback webhook else local mock
+    // If user typed an unrecognized slash command, handle locally to avoid server errors during dev
+    if (content.startsWith("/") && !keywordMatch) {
+      const ts = Date.now();
+      const textRes = "Unknown command. Try /urgent or /start <ritualId>.";
+      addMessage({ id: uid("m"), role: "assistant", text: textRes, timestamp: ts });
+      try {
+        await fetch("/api/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role: "assistant", text: textRes, timestamp: ts, echo: false }),
+        });
+      } catch {}
+      return;
+    }
     try {
-      if (fallbackWebhook) {
-        const res = await fetch(fallbackWebhook, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: content, lastMessages: messages.slice(-10), tone }),
-        });
-        const data = await res.json();
-        const ts = Date.now();
-        const textRes = data.text ?? "(no text)";
-        addMessage({ id: uid("m"), role: "assistant", text: textRes, timestamp: ts });
-        // Persist assistant reply (no echo)
-        try {
-          await fetch("/api/messages", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ role: "assistant", text: textRes, timestamp: ts, echo: false }),
-          });
-        } catch {}
-      } else {
-        const res = await fetch("/api/messages", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: content }),
-        });
-        const data = await res.json();
-        addMessage({ id: uid("m"), role: "assistant", text: data.text, timestamp: Date.now() });
+      // Always use server proxy to avoid browser CORS
+      const res = await fetch("/api/fallback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: content, lastMessages: messages.slice(-10), tone, url: fallbackWebhook || undefined }),
+      });
+      const data = await res.json().catch(() => ({} as any));
+      if (!res.ok || data?.ok === false) {
+        throw new Error(data?.error || "fallback failed");
       }
+      const ts = Date.now();
+      const textRes = data.text ?? "(no text)";
+      addMessage({ id: uid("m"), role: "assistant", text: textRes, timestamp: ts });
+      // Persist assistant reply (no echo)
+      try {
+        await fetch("/api/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role: "assistant", text: textRes, timestamp: ts, echo: false }),
+        });
+      } catch {}
     } catch (e) {
       const ts = Date.now();
       const errorText = "Request failed. Please try again.";
@@ -119,18 +143,18 @@ export default function ChatInput() {
   }
 
   return (
-    <div className="flex gap-2 font-mono text-green-400">
+    <div className="flex gap-2">
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && send()}
-        className="flex-1 border rounded px-3 py-1.5 text-sm bg-black text-green-400 border-green-700 placeholder-green-700 focus:outline-none focus:ring-0"
+        className="flex-1 border border-[var(--border)] rounded-lg px-4 py-2 text-sm bg-[var(--surface-1)] text-[var(--fg)] placeholder-[var(--fg)]/40 focus:outline-none focus:ring-2 focus:ring-slate-400 shadow-subtle"
         placeholder="Type a message or /start <ritualId>"
         aria-label="Chat input"
       />
       <button
         onClick={send}
-        className="px-3 py-1.5 rounded border border-green-700 bg-black text-green-400 hover:bg-green-900/20 text-sm"
+        className="px-4 py-2 rounded-lg border text-sm bg-gray-700 text-white hover:bg-gray-600 border-gray-600 shadow-subtle"
         aria-label="Send message"
       >
         Send

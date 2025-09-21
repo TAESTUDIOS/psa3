@@ -1,9 +1,15 @@
 // app/api/messages/route.ts
 // GET last 100 messages; POST append. Neon Postgres-backed with 100 cap.
+// Caching: explicitly disabled to support live polling from the chat UI.
 
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { uid } from "@/lib/id";
+
+// Disable all caching for this route to ensure polling always sees fresh data
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
 
 async function ensureTable() {
   const sql = getDb();
@@ -37,7 +43,16 @@ export async function GET() {
     const messages = rows
       .map((r: any) => ({ id: r.id, role: r.role, text: r.text, ritualId: r.ritual_id || undefined, buttons: r.buttons || [], metadata: r.metadata || {}, timestamp: Number(r.timestamp_ms) }))
       .reverse();
-    return NextResponse.json({ messages });
+    return NextResponse.json(
+      { messages },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   } catch (e: any) {
     return NextResponse.json({ ok: false, error: e?.message || "db error" }, { status: 500 });
   }
@@ -75,10 +90,28 @@ export async function POST(req: Request) {
       await sql`DELETE FROM messages WHERE id IN (
         SELECT id FROM messages ORDER BY timestamp_ms DESC OFFSET 100
       )`;
-      return NextResponse.json({ ok: true, text: reply.text });
+      return NextResponse.json(
+        { ok: true, text: reply.text },
+        {
+          headers: {
+            "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
+          },
+        }
+      );
     }
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json(
+      { ok: true },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      }
+    );
   } catch (e: any) {
     return NextResponse.json({ ok: false, error: e?.message || "db error" }, { status: 500 });
   }

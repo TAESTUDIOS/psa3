@@ -63,7 +63,17 @@ Replace with real persistence (Supabase, Vercel KV, Notion via n8n, etc.) for pr
 ## Deploying
 
 - Deploy to Vercel: https://vercel.com/docs
-  - Set environment variables in the project settings (no secrets in code).
+  - Import the `psanew/` project in Vercel (Git repo root works; the framework is auto-detected as Next.js).
+  - Ensure the project root is `psanew/` if your repo contains multiple apps.
+  - Environment Variables (Project Settings → Environment Variables):
+    - `DATABASE_URL` — Neon Postgres connection string (or `NEON_DATABASE_URL`).
+    - `NEXT_PUBLIC_FALLBACK_WEBHOOK` — optional, public-safe URL used by the client for fallback chat.
+    - `PUSHCUT_TOKEN` — optional, for future iOS notifications via n8n.
+    - `GPT_API_KEY` — optional, for n8n flows.
+  - You can copy `.env.example` to set these locally as `.env.local`. Do not commit real secrets.
+  - Build command: `npm run build` (default)
+  - Output: handled by Next.js automatically.
+  - After deploy, open `/chat` to verify auto-refreshing messages.
 
 ## Notes
 
