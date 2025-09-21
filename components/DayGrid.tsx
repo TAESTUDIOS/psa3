@@ -22,13 +22,13 @@ export default function DayGrid({ dateISO, appointments, onCreate }: DayGridProp
   const dayMinutes = 24 * 60;
   return (
     <div className="w-full">
-      <div className="text-sm text-gray-500 mb-2">{dateISO}</div>
-      <div className="relative border border-gray-200 dark:border-gray-800 rounded-md overflow-hidden">
+      <div className="text-sm text-gray-400 mb-2">{dateISO}</div>
+      <div className="relative border border-[var(--border)] rounded-md overflow-hidden bg-[var(--surface-1)]">
         {/* Hour rows */}
         <div className="grid grid-cols-[56px_1fr]">
           <div className="flex flex-col">
             {Array.from({ length: 24 }).map((_, h) => (
-              <div key={h} className="h-16 border-b border-gray-100 dark:border-gray-800 text-xs flex items-start justify-end pr-2 pt-1">
+              <div key={h} className="h-16 border-b border-[var(--border)] text-xs flex items-start justify-end pr-2 pt-1 text-gray-400">
                 {String(h).padStart(2, "0")}:00
               </div>
             ))}
@@ -36,7 +36,7 @@ export default function DayGrid({ dateISO, appointments, onCreate }: DayGridProp
           <div className="relative">
             {/* background hour lines */}
             {Array.from({ length: 24 }).map((_, h) => (
-              <div key={h} className="h-16 border-b border-gray-100 dark:border-gray-800" />
+              <div key={h} className="h-16 border-b border-[var(--border)]" />
             ))}
 
             {/* Appointment blocks */}
@@ -51,14 +51,14 @@ export default function DayGrid({ dateISO, appointments, onCreate }: DayGridProp
                   return (
                     <div
                       key={a.id}
-                      className="absolute left-2 right-2 rounded-md bg-blue-500/15 border border-blue-400/40 px-2 py-1 text-sm"
+                      className="absolute left-2 right-2 rounded-md bg-gray-700/30 border border-[var(--border)] px-2 py-1 text-sm"
                       style={{ top: `${topPct}%`, height: `${heightPct}%` }}
                       title={`${a.title} (${a.start} · ${a.durationMin}m)`}
                     >
-                      <div className="font-medium text-blue-700 dark:text-blue-300 truncate">{a.title}</div>
-                      <div className="text-xs text-blue-700/80 dark:text-blue-300/80">{a.start} · {a.durationMin}m</div>
+                      <div className="font-medium text-[var(--fg)] truncate">{a.title}</div>
+                      <div className="text-xs text-[var(--fg)]/80">{a.start} · {a.durationMin}m</div>
                       {a.notes ? (
-                        <div className="mt-1 text-xs text-blue-700/70 dark:text-blue-300/70 line-clamp-2">{a.notes}</div>
+                        <div className="mt-1 text-xs text-[var(--fg)]/70 line-clamp-2">{a.notes}</div>
                       ) : null}
                     </div>
                   );

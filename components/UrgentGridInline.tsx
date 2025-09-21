@@ -28,7 +28,7 @@ export default function UrgentGridInline() {
   }
 
   const chip = (p: string) => {
-    const base = "inline-flex items-center px-2 py-0.5 rounded-full text-[11px] leading-4 font-medium";
+    const base = "inline-flex items-center px-2 py-0.5 rounded-md text-[11px] leading-4 font-medium";
     const map: Record<string, string> = {
       high: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200",
       medium: "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200",

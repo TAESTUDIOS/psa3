@@ -80,7 +80,7 @@ export default function DayPage() {
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2">
           <button
-            className="text-sm px-3 py-1.5 rounded-md border border-gray-300 bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+            className="text-sm px-3 py-1.5 rounded-md border border-[var(--border)] bg-[var(--surface-1)] hover:bg-[var(--surface-2)]"
             onClick={() => router.push(`/schedule/${prevDate}`)}
             aria-label="Previous day"
           >
@@ -88,7 +88,7 @@ export default function DayPage() {
           </button>
           <h1 className="text-xl font-semibold">{date}</h1>
           <button
-            className="text-sm px-3 py-1.5 rounded-md border border-gray-300 bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+            className="text-sm px-3 py-1.5 rounded-md border border-[var(--border)] bg-[var(--surface-1)] hover:bg-[var(--surface-2)]"
             onClick={() => router.push(`/schedule/${nextDate}`)}
             aria-label="Next day"
           >
@@ -103,11 +103,11 @@ export default function DayPage() {
               const v = e.target.value;
               if (/^\d{4}-\d{2}-\d{2}$/.test(v)) router.push(`/schedule/${v}`);
             }}
-            className="text-sm px-2 py-1.5 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900"
+            className="text-sm px-2 py-1.5 rounded-md border border-[var(--border)] bg-[var(--surface-1)] text-[var(--fg)] placeholder-[var(--fg)]/40"
             aria-label="Pick date"
           />
           <button
-            className="text-sm px-3 py-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+            className="text-sm px-3 py-1.5 rounded-md bg-gray-700 text-white hover:bg-gray-600"
             onClick={() => setCreateOpen(true)}
             aria-label="Create appointment"
             title="Create appointment"
@@ -115,7 +115,7 @@ export default function DayPage() {
             + Add
           </button>
           <button
-            className="text-sm px-3 py-1.5 rounded-md border border-gray-300 bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+            className="text-sm px-3 py-1.5 rounded-md border border-[var(--border)] bg-[var(--surface-1)] hover:bg-[var(--surface-2)]"
             onClick={() => router.push("/schedule")}
           >
             Back to Overview
@@ -152,7 +152,7 @@ export default function DayPage() {
         ) : items.length === 0 ? (
           <div className="text-sm text-gray-500">No appointments yet.</div>
         ) : (
-          <ul className="divide-y divide-gray-200 dark:divide-gray-800 rounded-md border border-gray-200 dark:border-gray-800 overflow-hidden">
+          <ul className="divide-y divide-[var(--border)] rounded-md border border-[var(--border)] overflow-hidden bg-[var(--surface-1)]">
             {items
               .slice()
               .sort((a, b) => a.start.localeCompare(b.start))
@@ -165,13 +165,13 @@ export default function DayPage() {
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <button
-                      className="text-xs px-2 py-1 rounded-md border border-gray-300 bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
+                      className="text-xs px-2 py-1 rounded-md border border-[var(--border)] bg-[var(--surface-1)] hover:bg-[var(--surface-2)]"
                       onClick={() => setEditing(a)}
                     >
                       Edit
                     </button>
                     <button
-                      className="text-xs px-2 py-1 rounded-md border border-red-300 bg-white text-red-700 hover:bg-red-50 dark:border-red-800 dark:bg-gray-900 dark:text-red-300 dark:hover:bg-red-900/30"
+                      className="text-xs px-2 py-1 rounded-md border border-gray-600 bg-[var(--surface-1)] text-gray-300 hover:bg-[var(--surface-2)]"
                       onClick={() => onDelete(a.id)}
                     >
                       Delete
